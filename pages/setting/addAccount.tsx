@@ -45,7 +45,7 @@ const Home = () => {
   const [hdPathIndex, setHdPathIndex] = useState(0)
   const [accountName, setAccountName] = useState('')
   const [wif, setWif] = useState('')
-  const [addressType, setAddressType] = useState({ label: 'Segiwt', value: 'segwit' })
+  const [addressType, setAddressType] = useState({ label: 'Segwit', value: 'segwit' })
   const [address, setAddress] = useState('')
   const router = useRouter()
 
@@ -94,7 +94,7 @@ const Home = () => {
           <Text mt="20px">Address Type:</Text>
           <Select
             options={[
-              { label: 'Segiwt', value: 'segwit' },
+              { label: 'Segwit', value: 'segwit' },
               { label: 'Legacy', value: 'legacy' },
             ]}
             value={addressType}
