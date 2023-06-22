@@ -1,0 +1,48 @@
+{
+  "name": "stampwallet",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "export NEXT_PUBLIC_RUNNING_ENV=WEB NODE_OPTIONS=--openssl-legacy-provider && next dev -p 3333",
+    "start": "next start",
+    "lint": "next lint",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider && next build && next export && mv ./out/_next ./out/next && cd ./out && grep -rli '_next' * | xargs -I@ sed -i '' 's|/_next|/next|g' @;",
+    "zip": "npm run build && rm stampwallet.zip && zip -r stampwallet.zip out/"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^2.0.17",
+    "@chakra-ui/react": "^2.5.4",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@tanstack/react-query": "^4.29.7",
+    "@types/chrome": "^0.0.227",
+    "@types/node": "18.15.11",
+    "@types/react": "18.0.31",
+    "@types/react-dom": "18.0.11",
+    "axios": "^1.4.0",
+    "bitcoinjs-lib": "^6.1.0",
+    "bitcore-lib": "^10.0.5",
+    "bitcore-mnemonic": "^10.0.5",
+    "browser-passworder": "^2.0.3",
+    "chakra-react-select": "^4.6.0",
+    "decko": "^1.2.0",
+    "ecpair": "^2.1.0",
+    "eslint": "8.37.0",
+    "eslint-config-next": "13.2.4",
+    "framer-motion": "^10.10.0",
+    "js-sha512": "^0.8.0",
+    "lodash": "^4.17.21",
+    "next": "13.2.4",
+    "numeral": "^2.0.6",
+    "qrcode.react": "^3.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^4.8.0",
+    "react-jazzicon": "^1.0.4",
+    "tiny-secp256k1": "^2.2.1",
+    "typescript": "4.9.5"
+  },
+  "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^4.29.4"
+  }
+}
