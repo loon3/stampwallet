@@ -17,7 +17,7 @@ import { LOCAL_STORAGE } from '@/constant'
 
 const getExplorerUrl = (network, txId) => {
   const urlBase =
-    network === 'livenet' ? 'https://blockstream.info/tx' : 'https://blockstream.info/testnet/tx'
+    network === 'livenet' ? 'https://mempool.space/tx' : 'https://mempool.space/testnet/tx'
   return `${urlBase}/${txId}`
 }
 
