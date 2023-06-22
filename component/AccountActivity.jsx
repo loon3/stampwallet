@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { querySrc20ByAddress } from '../query/src20.js'
 import { useState, useEffect } from 'react'
 import numeral from 'numeral'
+import moment from 'moment'
 import {
   setLocalItem,
   getLocalItem,
@@ -50,7 +51,7 @@ export default function Home({ address, network }) {
               </Link>
 
               <Spacer />
-              <Text fontSize={'13px'}>{item.date}</Text>
+              <Text fontSize={'13px'}>{moment(item.date).format('YYYY-MM-DD HH:mm')}</Text>
             </Flex>
           </Box>
         )
