@@ -45,6 +45,8 @@ const Send = () => {
   const account = wallet.getCurrentAccount()
   const network = wallet.getNetwork()
 
+  const isNonSegwitAddress = account?.address.substring(0, 1) !== 'b'
+
   const { data: memPoolFeeRecommended, isLoading: isLoadingMemPoolFee } = useQuery(
     ['queryMempoolFee', {}],
     queryMempoolFee,
@@ -53,7 +55,7 @@ const Send = () => {
     }
   )
   const recommendedFeePerVb = memPoolFeeRecommended
-    ? parseInt(memPoolFeeRecommended * 1.25)
+    ? parseInt(memPoolFeeRecommended * 1.2 * (isNonSegwitAddress ? 1.2 : 1.0))
     : undefined
 
   useEffect(() => {
