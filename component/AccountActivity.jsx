@@ -35,7 +35,7 @@ export default function Home({ address, network }) {
   }, [address, network])
 
   return (
-    <Box>
+    <Box maxHeight={'300px'} overflowY={'scroll'} pr="16px">
       {activities.map((item, index) => {
         return (
           <Box key={index} my="10px">
