@@ -55,7 +55,7 @@ const Send = () => {
     }
   )
   const recommendedFeePerVb = memPoolFeeRecommended
-    ? parseInt(memPoolFeeRecommended * 1.2 * (isNonSegwitAddress ? 1.2 : 1.0))
+    ? parseInt(memPoolFeeRecommended * 1.2 * (isNonSegwitAddress ? 1.5 : 1.0))
     : undefined
 
   useEffect(() => {

@@ -32,6 +32,7 @@ import {
 import { LOCAL_STORAGE } from '@/constant'
 
 const Send = () => {
+  const MIN_FEE_RATE = 36
   const router = useRouter()
   const [recipient, setRecipient] = useState('')
   const [token, setToken] = useState('')
@@ -55,7 +56,10 @@ const Send = () => {
     }
   )
   const recommendedFeePerVb = memPoolFeeRecommended
-    ? parseInt(memPoolFeeRecommended * 2.3 * (isNonSegwitAddress ? 1.2 : 1.0))
+    ? Math.max(
+        MIN_FEE_RATE,
+        parseInt(memPoolFeeRecommended * 2.3 * (isNonSegwitAddress ? 1.2 : 1.0))
+      )
     : undefined
 
   useEffect(() => {
@@ -88,7 +92,6 @@ const Send = () => {
       return
     }
 
-    const MIN_FEE_RATE = 36
     if (parseFloat(feeRate || '0') < MIN_FEE_RATE) {
       notifyWarn({ title: `Fee cannot be lower than ${MIN_FEE_RATE} sat/vB` })
       return
