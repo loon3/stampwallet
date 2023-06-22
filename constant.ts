@@ -10,6 +10,8 @@ export const LOCAL_STORAGE = {
 export const DEFAULT_HD_PATH = "m/84'/0'/0'/0"
 export const KEY_RING_TYPE = {
   HD: 'hd',
+  WIF: 'wif',
+  WATCH: 'watch',
 }
 
 export const EXTENSION_ID = 'aabcfjplbhjjiocgmpmegogflfepalgc'

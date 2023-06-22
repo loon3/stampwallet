@@ -30,6 +30,7 @@ import { BiLinkExternal } from 'react-icons/bi'
 import Jazzicon from 'react-jazzicon'
 import { notify, notifyWarn, getExplorerLink } from '@/utils/common'
 import { useRouter } from 'next/router'
+import { KEY_RING_TYPE } from '@/constant'
 
 export const AccountCard = ({ index, account, network, onClick, onDelete }) => {
   const router = useRouter()
@@ -39,11 +40,16 @@ export const AccountCard = ({ index, account, network, onClick, onDelete }) => {
       <Box cursor={'pointer'} h="66px" py="10px" px="10px">
         <Flex>
           <Center mx="6px" onClick={onClick}>
-            <Jazzicon diameter={40} seed={parseInt(account.address.slice(2, 10), 36)} />
+            <Jazzicon diameter={40} seed={parseInt(account.address?.slice(2, 10), 36)} />
           </Center>
           <Box onClick={onClick}>
-            <Text color="muted">{account.name || 'Unnamed'}</Text>
-            <Text fontSize={'13px'}>{`${addressSummary(account.address)} (${account.index})`}</Text>
+            <Text color="muted">
+              {account.name || 'Unnamed'}{' '}
+              {account.type !== KEY_RING_TYPE.HD ? `(${account.type})` : ''}
+            </Text>
+            <Text fontSize={'13px'}>{`${addressSummary(account.address)} ${
+              account.index !== undefined ? '(' + account.index + ')' : ''
+            }`}</Text>
           </Box>
           <Spacer onClick={onClick} />
           <Center mx="8px">{account.isCurrent && <CheckIcon />}</Center>

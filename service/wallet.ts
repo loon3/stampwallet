@@ -9,6 +9,8 @@ import {
 } from '@/service/storage'
 import * as bitcoin from 'bitcoinjs-lib'
 import HdKeyRing from '@/service/HdKeyRing'
+import WifKeyRing from '@/service/WifKeyRing'
+import WatchKeyRing from '@/service/WatchKeyRing'
 import { DEFAULT_HD_PATH, KEY_RING_TYPE } from '@/constant'
 
 import { LOCAL_STORAGE, SESSION_STORAGE } from '@/constant'
@@ -29,14 +31,36 @@ class Wallet {
     const keyRing = this.keyRingMapping[config.keyRingId]
     let res = {}
     if (keyRing) {
-      const account = keyRing.getAccount(config.index, this.network, config.hdPath)
-      res = {
-        ecpair: account.ecpair,
-        address: account.address,
-        hdPath: config.hdPath,
-        index: config.index,
-        name: config.name,
-        isCurrent: config.isCurrent,
+      if (keyRing.type === KEY_RING_TYPE.HD) {
+        const account = keyRing.getAccount(config.index, this.network, config.hdPath)
+        res = {
+          ecpair: account.ecpair,
+          address: account.address,
+          hdPath: config.hdPath,
+          index: config.index,
+          name: config.name,
+          isCurrent: config.isCurrent,
+          type: keyRing.type,
+        }
+      }
+      if (keyRing.type === KEY_RING_TYPE.WIF) {
+        const account = keyRing.getAccount(this.network)
+        res = {
+          ecpair: account.ecpair,
+          address: account.address,
+          name: config.name,
+          isCurrent: config.isCurrent,
+          type: keyRing.type,
+        }
+      }
+      if (keyRing.type === KEY_RING_TYPE.WATCH) {
+        const account = keyRing.getAccount(this.network)
+        res = {
+          address: account.address,
+          name: config.name,
+          isCurrent: config.isCurrent,
+          type: keyRing.type,
+        }
       }
     }
     return res
@@ -89,6 +113,54 @@ class Wallet {
       name: name || `Account ${index}`,
     })
     // don't need to await
+    this.persist()
+    return true
+  }
+
+  addWifKeyRingAccount(wif: string, addressType: string, name: string) {
+    // check exist
+    let exist = false
+    this.keyRings.forEach((keyRing) => {
+      if (keyRing.wif === wif && keyRing.addressType === addressType) {
+        exist = true
+      }
+    })
+
+    if (exist) return false
+
+    const wifKeyRing = new WifKeyRing(wif, addressType)
+    this.keyRings.push(wifKeyRing)
+    this.updateKeyRingMapping()
+
+    this.displayConfig.push({
+      keyRingId: wifKeyRing.getId(),
+      name: name || `Account Imported`,
+    })
+
+    this.persist()
+    return true
+  }
+
+  addWatchKeyRingAccount(address: string, name: string) {
+    // check exist
+    let exist = false
+    this.keyRings.forEach((keyRing) => {
+      if (keyRing.address === address) {
+        exist = true
+      }
+    })
+
+    if (exist) return false
+
+    const watchKeyRing = new WatchKeyRing(address)
+    this.keyRings.push(watchKeyRing)
+    this.updateKeyRingMapping()
+
+    this.displayConfig.push({
+      keyRingId: watchKeyRing.getId(),
+      name: name || `Account Watched`,
+    })
+
     this.persist()
     return true
   }
@@ -198,10 +270,25 @@ class Wallet {
     const passwordHash = await this.getPasswordHash()
 
     const keyRingData = this.keyRings.map((keyRing) => {
-      return {
-        type: keyRing.type,
-        mnemonic: keyRing.mnemonic,
-        passphrase: keyRing.passphrase,
+      if (keyRing.type === KEY_RING_TYPE.HD) {
+        return {
+          type: keyRing.type,
+          mnemonic: keyRing.mnemonic,
+          passphrase: keyRing.passphrase,
+        }
+      }
+      if (keyRing.type === KEY_RING_TYPE.WIF) {
+        return {
+          type: keyRing.type,
+          wif: keyRing.wif,
+          addressType: keyRing.addressType,
+        }
+      }
+      if (keyRing.type === KEY_RING_TYPE.WATCH) {
+        return {
+          type: keyRing.type,
+          address: keyRing.address,
+        }
       }
     })
 
@@ -211,7 +298,6 @@ class Wallet {
       network: this.network,
     }
 
-    console.log('persist', this.displayConfig)
     const cipher = await encryptor.encrypt(passwordHash, dataToPersist)
     await setLocalItem(LOCAL_STORAGE.WALLET_ENCRYPT, cipher)
   }
@@ -226,6 +312,14 @@ class Wallet {
     keyRingData.forEach((each) => {
       if (each.type === KEY_RING_TYPE.HD) {
         const keyRing = new HdKeyRing(each.mnemonic, each.passphrase)
+        keyRings.push(keyRing)
+      }
+      if (each.type === KEY_RING_TYPE.WIF) {
+        const keyRing = new WifKeyRing(each.wif, each.addressType)
+        keyRings.push(keyRing)
+      }
+      if (each.type === KEY_RING_TYPE.WATCH) {
+        const keyRing = new WatchKeyRing(each.address)
         keyRings.push(keyRing)
       }
     })
