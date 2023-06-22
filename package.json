@@ -20,7 +20,7 @@
     "@types/react": "18.0.31",
     "@types/react-dom": "18.0.11",
     "axios": "^1.4.0",
-    "bitcoinjs-lib": "^6.1.0",
+    "bitcoinjs-lib": "6.1.0",
     "bitcore-lib": "^10.0.5",
     "bitcore-mnemonic": "^10.0.5",
     "browser-passworder": "^2.0.3",

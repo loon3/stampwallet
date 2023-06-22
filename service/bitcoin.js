@@ -70,6 +70,7 @@ export const prepareSendBitcoin = async ({
   value,
   feeRate,
 }) => {
+  console.log(ecPair, network, utxos, changeAddress, toAddress, value, feeRate)
   const psbtNetwork = network === 'testnet' ? bitcoin.networks.testnet : bitcoin.networks.bitcoin
   const psbt = new bitcoin.Psbt({ network: psbtNetwork })
 
