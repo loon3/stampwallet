@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { notifyWarn } from '@/utils/common'
+import { notifyWarn, notify } from '@/utils/common'
 import PasswordInput from '@/component/PasswordInput'
 import wallet from '@/service/wallet'
 
@@ -161,6 +161,9 @@ export default function Wallet() {
           {generateSplits(mnemonic).map((each, index) => {
             return (
               <Center key={index} height="20px">
+                <Text fontSize="14px" color="#888888" mr="5px">
+                  {index + 1}
+                </Text>
                 <Text fontSize="14px">{each}</Text>
               </Center>
             )
@@ -178,8 +181,23 @@ export default function Wallet() {
           Regenerate
         </Button>
         <Spacer m="4px" />
+
         <Button
           w="250px"
+          onClick={() => {
+            navigator.clipboard.writeText(mnemonic)
+            notify({
+              title: `Seed Phrase Copied`,
+            })
+          }}
+        >
+          Copy
+        </Button>
+      </Center>
+
+      <Center mt="30px">
+        <Button
+          w="100%"
           onClick={() => {
             setStep(STEP_PASSWORD)
           }}
