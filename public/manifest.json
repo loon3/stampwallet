@@ -3,6 +3,9 @@
   "version": "0.2.1",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAohn1cUqjO5bROAglZWnMvJSty6ftrA0ZqdLqb/09zCOruYV8vI1wGQBVIK4N79e6BEGzmOFVESy14lrD3u7NDi+Ud6KlDGcnXnHDXXljhIefKwwA/Og9xxsvAEswkqLDC+sr8VoZgRRgLztWjGeWynZKZXnuTymo5vGGRHZvai1hg5AzD/GpHXyOsDxRa0UYZXCvUN1cUZiu2h1Q2m0VQzDtq2z5TkrF2goU29eSPyBZkgDbZmlk4PVHtAEvSyQItScbhgTQzKQDAZRLwsayQO/jyQtkIDASL0Dnk3x70U9XVU0mNPKQo2OqEsMj4Y+b95Do+/jmQIw2+aij8H9wOQIDAQAB",
   "manifest_version": 3,
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
   "action": {
     "default_title": "Stamp Wallet",
     "default_popup": "index.html"
