@@ -16,7 +16,7 @@ export default function Home({ summary, isLoading }) {
   }
 
   return (
-    <Box>
+    <Box maxHeight="200px">
       {summary.map((item, index) => {
         return (
           <Box key={index} my="10px">
