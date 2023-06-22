@@ -13,6 +13,7 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  Spinner,
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import wallet from '@/service/wallet'
@@ -23,6 +24,7 @@ import Jazzicon from 'react-jazzicon'
 import { BsThreeDots } from 'react-icons/bs'
 import { FiCopy } from 'react-icons/fi'
 import { AiOutlineArrowUp, AiOutlineQrcode } from 'react-icons/ai'
+import { SlRefresh } from 'react-icons/sl'
 import { BiTransferAlt } from 'react-icons/bi'
 import { notify, notifyWarn, getExplorerLink } from '@/utils/common'
 import { addressSummary } from '@/utils/common'
@@ -38,21 +40,24 @@ const Home = () => {
   const network = wallet.getNetwork()
   let accountAddress = account?.address || 'fakeaddress'
 
-  const { data, isLoading, isFetching } = useQuery(
-    ['querySrc20ByAddress', { address: accountAddress }],
-    querySrc20ByAddress,
-    {
-      refetchInterval: 120 * 1000,
-    }
-  )
+  const {
+    data,
+    isLoading,
+    isFetching: isFetchingSrc20,
+    refetch: refetchSrc20,
+  } = useQuery(['querySrc20ByAddress', { address: accountAddress }], querySrc20ByAddress, {
+    refetchInterval: 180 * 1000,
+  })
 
   const {
     data: utxosData,
     isLoading: isLoadingUtxo,
     isFetching: isFetchingUtxo,
+    refetch: refetchUtxo,
   } = useQuery({
     queryKey: ['utxos', { network, address: account?.address, confirmed: true }],
     queryFn: queryUtxos,
+    refetchInterval: 180 * 1000,
   })
 
   const utxos = utxosData || []
@@ -109,7 +114,21 @@ const Home = () => {
       </Flex>
 
       <Center mt="10px">
-        <Text fontSize={'25px'}>{`${btcBalance} BTC`}</Text>
+        <Text fontSize="25px">{`${btcBalance} BTC`}</Text>
+        {isFetchingSrc20 || isFetchingUtxo ? (
+          <Spinner ml="15px" size="sm" />
+        ) : (
+          <Icon
+            ml="15px"
+            as={SlRefresh}
+            boxSize="18px"
+            cursor={'pointer'}
+            onClick={() => {
+              refetchSrc20()
+              refetchUtxo()
+            }}
+          />
+        )}
       </Center>
 
       <HStack mt="20px">
