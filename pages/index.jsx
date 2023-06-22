@@ -108,11 +108,11 @@ const Home = () => {
         </Center>
       </Flex>
 
-      <Center mt="20px">
+      <Center mt="10px">
         <Text fontSize={'25px'}>{`${btcBalance} BTC`}</Text>
       </Center>
 
-      <HStack mt="30px">
+      <HStack mt="20px">
         <Button
           w="100%"
           leftIcon={<BiTransferAlt />}
@@ -142,7 +142,7 @@ const Home = () => {
         </Button>
       </HStack>
 
-      <Box mt="30px">
+      <Box mt="20px">
         <Tabs isFitted variant="soft-rounded">
           <TabList p="5px">
             <Tab>Balances</Tab>

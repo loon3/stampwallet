@@ -16,10 +16,10 @@ export default function Home({ summary, isLoading }) {
   }
 
   return (
-    <Box maxHeight="200px">
+    <Box maxHeight={'300px'} overflowY={'scroll'} pr="16px">
       {summary.map((item, index) => {
         return (
-          <Box key={index} my="10px">
+          <Box key={index} my="8px">
             <Flex>
               <Text fontSize={'lg'}>{item.tick.toUpperCase()}</Text>
               <Spacer />
